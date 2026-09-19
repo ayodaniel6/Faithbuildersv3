@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<article class="post-detail">
+
+    <!-- Article Header -->
+
+    <header class="post-detail-header">
+
+        <div class="post-detail-meta">
+
+            <span>
+                {{ post.published_date|date:"F j, Y" }}
+            </span>
+
+            {% for category in post.categories.all %}
+
+                <a
+                    href="{% url 'blog:category_posts' category.slug %}"
+                >
+                    {{ category.name }}
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+
+        <h1>
+            {{ post.title }}
+        </h1>
+
+
+        {% if post.excerpt %}
+
+            <p class="post-detail-excerpt">
+                {{ post.excerpt }}
+            </p>
+
+        {% endif %}
+
+    </header>
+
+
+    <!-- Featured Image -->
+
+    {% if post.featured_image %}
+
+        <figure class="post-detail-image">
+
+            <img
+                src="{{ post.featured_image.url }}"
+                alt="{{ post.title }}"
+            >
+
+        </figure>
+
+    {% endif %}
+
+
+    <!-- Article Body -->
+
+    <div class="post-detail-body">
+
+        {{ body_html|safe }}
+
+        {% if post.series %}
+
+    <section class="series-navigation">
+
+        <div class="series-navigation-inner">
+
+            <p class="section-eyebrow">
+                Part {{ series_position }} of {{ series_total }}
+            </p>
+
+            <h2>
+                {{ post.series.name }}
+            </h2>
+
+
+            <div class="series-navigation-links">
+
+                {% if previous_post %}
+
+                    <a
+                        href="{% url 'blog:post_detail' previous_post.slug %}"
+                        class="series-nav previous"
+                    >
+                        <span>
+                            ← Previous
+                        </span>
+
+                        <strong>
+                            {{ previous_post.title }}
+                        </strong>
+
+                    </a>
+
+                {% endif %}
+
+
+                {% if next_post %}
+
+                    <a
+                        href="{% url 'blog:post_detail' next_post.slug %}"
+                        class="series-nav next"
+                    >
+                        <span>
+                            Next →
+                        </span>
+
+                        <strong>
+                            {{ next_post.title }}
+                        </strong>
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endif %}
+
+    </div>
+
+
+    <!-- YouTube Video -->
+
+    {% if post.youtube_url %}
+
+        <div class="post-video">
+
+            <h2>
+                Watch the conversation
+            </h2>
+
+            <div class="video-wrapper">
+
+                <iframe
+                    src="{{ post.youtube_embed_url }}"
+                    title="{{ post.title }}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                >
+                </iframe>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- Categories -->
+
+    <div class="post-detail-categories">
+
+        <span>
+            Filed under
+        </span>
+
+        {% for category in post.categories.all %}
+
+            <a
+                href="{% url 'blog:category_posts' category.slug %}"
+            >
+                {{ category.name }}
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- Sharing -->
+
+    <section class="post-sharing">
+
+        <h2>
+            Share this story
+        </h2>
+
+        <p>
+            If this message speaks to someone you know,
+            share it with them.
+        </p>
+
+
+        <div class="share-links">
+
+            <a
+                href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Facebook
+            </a>
+
+
+            <a
+                href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                X
+            </a>
+
+
+            <a
+                href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                LinkedIn
+            </a>
+
+
+            <a
+                href="https://wa.me/?text={{ post.title }}%20{{ request.build_absolute_uri }}"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                WhatsApp
+            </a>
+
+
+            <button
+                type="button"
+                class="copy-link"
+                data-url="{{ request.build_absolute_uri }}"
+            >
+                Copy link
+            </button>
+
+        </div>
+
+    </section>
+
+</article>
+
+{% endblock %}

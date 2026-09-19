@@ -1,0 +1,606 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Home | Faithbuilders
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-pattern"></div>
+
+    <div class="container hero-content">
+
+        <div class="hero-text">
+
+            <p class="hero-eyebrow">
+                Faith. Family. Community.
+            </p>
+
+            <h1>
+                Building stronger homes.
+                <span>Guiding the next generation.</span>
+            </h1>
+
+            <p class="hero-description">
+                Faithbuilders is a Christian community committed
+                to strengthening families, supporting young people,
+                and building healthier communities through faith,
+                wisdom and meaningful connection.
+            </p>
+
+            <div class="hero-actions">
+
+                <a
+                    href="#about"
+                    class="button button-primary"
+                >
+                    Discover Faithbuilders
+                </a>
+
+                <a
+                    href="{% url 'blog:post_list' %}"
+                    class="button button-outline"
+                >
+                    Read our stories
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="about" class="about-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <p class="section-eyebrow">
+                About Faithbuilders
+            </p>
+
+            <h2>
+                Faith that strengthens
+                <span>the home and the community.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="about-grid">
+
+            <div class="about-introduction">
+
+                <p class="about-lead">
+                    Faithbuilders exists to encourage stronger families,
+                    nurture the younger generation, and create a community
+                    where people can find guidance, hope and meaningful
+                    connection.
+                </p>
+
+            </div>
+
+
+            <div class="about-text">
+
+                <p>
+                    We believe that healthy homes are the foundation of
+                    healthy communities. Through Christian values,
+                    counselling, mentorship and practical support, we seek
+                    to help individuals and families navigate the realities
+                    of everyday life.
+                </p>
+
+                <p>
+                    Our work extends beyond the home. We are passionate
+                    about helping young people discover purpose, develop
+                    character and grow into people who can positively
+                    influence their generation.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="founder" class="founder-section">
+
+    <div class="container">
+
+        <div class="founder-grid">
+
+            {% if founder %}
+
+                <div class="founder-image-wrapper">
+
+                    {% if founder.photo %}
+
+                        <img
+                            src="{{ founder.photo.url }}"
+                            alt="{{ founder.name }}"
+                            class="founder-image"
+                        >
+
+                    {% else %}
+
+                        <div class="founder-image-placeholder">
+                            <span>Faithbuilders</span>
+                        </div>
+
+                    {% endif %}
+
+                        {% if founder.quote %}
+
+                        <p class="founder-quote">
+                            "{{ founder.quote }}"
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="founder-content">
+
+                    <p class="section-eyebrow">
+                        Meet the Founder
+                    </p>
+
+                    <h2>
+                        {{ founder.name }}
+                    </h2>
+
+                    <p class="founder-role">
+                        {{ founder.role }}
+                    </p>
+
+                    {% if founder.biography %}
+
+                        <div class="founder-biography">
+
+                            <p>
+                                {{ founder.biography|linebreaks }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if founder.favorite_scripture %}
+
+                        <blockquote class="founder-scripture">
+
+                            <p>
+                              {{ founder.favorite_scripture }}
+                            </p>
+
+                        </blockquote>
+
+                    {% endif %}
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    Founder information is currently unavailable.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="featured-section">
+
+    <div class="container">
+
+        <div class="section-heading featured-heading">
+
+            <div>
+
+                <p class="section-eyebrow">
+                    From the Journal
+                </p>
+
+                <h2>
+                    Stories worth
+                    <span>spending time with.</span>
+                </h2>
+
+            </div>
+
+            <a
+                href="{% url 'blog:post_list' %}"
+                class="text-link"
+            >
+                Explore all posts
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+
+        {% if featured_posts %}
+
+            <div class="featured-grid">
+
+                {% for post in featured_posts %}
+
+                    <article class="post-card">
+
+                        {% if post.featured_image %}
+
+                            <a href="{{ post.get_absolute_url }}">
+
+                                <img
+                                    src="{{ post.featured_image.url }}"
+                                    alt="{{ post.title }}"
+                                    class="post-card-image"
+                                >
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <div class="post-card-content">
+
+                            {% if post.categories.all %}
+
+                                <div class="post-card-categories">
+
+                                    {% for category in post.categories.all %}
+
+                                        <span>
+                                            {{ category.name }}
+                                        </span>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <h3>
+
+                                <a href="{{ post.get_absolute_url }}">
+                                    {{ post.title }}
+                                </a>
+
+                            </h3>
+
+
+                            {% if post.excerpt %}
+
+                                <p>
+                                    {{ post.excerpt }}
+                                </p>
+
+                            {% endif %}
+
+
+                            <a
+                                href="{{ post.get_absolute_url }}"
+                                class="post-card-link"
+                            >
+                                Read article
+                                <span aria-hidden="true">→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-posts">
+
+                <p>
+                    New stories are coming soon.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<section id="empowerment" class="empowerment-section">
+
+    <div class="container">
+
+        <div class="empowerment-grid">
+
+            <div class="empowerment-intro">
+
+                <p class="section-eyebrow">
+                    Our Work
+                </p>
+
+                <h2>
+                    Building people
+                    <span>for a stronger tomorrow.</span>
+                </h2>
+
+                <p>
+                    Faithbuilders is committed to more than conversations.
+                    We believe in creating practical opportunities for
+                    people to grow, learn, connect and become a positive
+                    influence in their homes and communities.
+                </p>
+
+                <a
+                    href="#contact"
+                    class="button button-primary"
+                >
+                    Connect with us
+                </a>
+
+            </div>
+
+
+            <div class="empowerment-pillars">
+
+                <article class="pillar">
+
+                    <span class="pillar-number">
+                        01
+                    </span>
+
+                    <h3>
+                        Stronger Homes
+                    </h3>
+
+                    <p>
+                        Encouraging healthier relationships, stronger
+                        families and homes built on faith, understanding
+                        and mutual respect.
+                    </p>
+
+                </article>
+
+
+                <article class="pillar">
+
+                    <span class="pillar-number">
+                        02
+                    </span>
+
+                    <h3>
+                        Young Lives
+                    </h3>
+
+                    <p>
+                        Guiding young people through mentorship, wisdom
+                        and meaningful conversations that help them grow
+                        with confidence and purpose.
+                    </p>
+
+                </article>
+
+
+                <article class="pillar">
+
+                    <span class="pillar-number">
+                        03
+                    </span>
+
+                    <h3>
+                        Counselling & Support
+                    </h3>
+
+                    <p>
+                        Creating room for people to talk, reflect and
+                        receive compassionate guidance through difficult
+                        seasons of life.
+                    </p>
+
+                </article>
+
+
+                <article class="pillar">
+
+                    <span class="pillar-number">
+                        04
+                    </span>
+
+                    <h3>
+                        Community
+                    </h3>
+
+                    <p>
+                        Building a community where people can connect,
+                        encourage one another and discover that they do
+                        not have to walk through life alone.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="contact" class="contact-section">
+
+    <div class="container">
+
+        <div class="contact-wrapper">
+
+            <div class="contact-intro">
+
+                <p class="section-eyebrow">
+                    Get in Touch
+                </p>
+
+                <h2>
+                    Sometimes, the first step
+                    is simply <span>reaching out.</span>
+                </h2>
+
+                <p>
+                    Whether you would like to learn more about
+                    Faithbuilders, seek guidance, discuss a family
+                    concern, or simply have a conversation, we would
+                    be glad to hear from you.
+                </p>
+
+            </div>
+
+
+            <div class="contact-details">
+
+                <div class="contact-item">
+
+                    <span class="contact-label">
+                        Email
+                    </span>
+
+                    <a href="mailto:hello@faithbuilders.org">
+                        hello@faithbuilders.org
+                    </a>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <span class="contact-label">
+                        Phone
+                    </span>
+
+                    <a href="tel:+2340000000000">
+                        +234 000 000 0000
+                    </a>
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <span class="contact-label">
+                        Connect
+                    </span>
+
+                    <div class="contact-socials">
+
+                        <a href="#" aria-label="Facebook">
+                            Facebook
+                        </a>
+
+                        <a href="#" aria-label="Instagram">
+                            Instagram
+                        </a>
+
+                        <a href="#" aria-label="YouTube">
+                            YouTube
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+    {% comment %} <section>
+
+        <h2>
+            Featured Articles
+        </h2>
+
+        {% for post in featured_posts %}
+
+            <article>
+
+                <h3>
+
+                    <a href="{% url 'blog:post_detail' post.slug %}">
+                        {{ post.title }}
+                    </a>
+
+                </h3>
+
+                <p>
+                    {{ post.excerpt }}
+                </p>
+
+            </article>
+
+        {% empty %}
+
+            <p>
+                No featured articles available.
+            </p>
+
+        {% endfor %}
+
+    </section>
+
+
+    <section>
+
+        <h2>
+            Latest Articles
+        </h2>
+
+        {% for post in latest_posts %}
+
+            <article>
+
+                <h3>
+
+                    <a href="{% url 'blog:post_detail' post.slug %}">
+                        {{ post.title }}
+                    </a>
+
+                </h3>
+
+                <p>
+                    {{ post.excerpt }}
+                </p>
+
+            </article>
+
+        {% empty %}
+
+            <p>
+                No articles available yet.
+            </p>
+
+        {% endfor %}
+
+    </section> {% endcomment %}
+
+{% endblock %}

@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <!-- Blog Header -->
+
+    <section class="blog-header">
+
+        <div class="container">
+
+            <p class="section-eyebrow">
+                The Journal
+            </p>
+
+            <h1>
+                Stories, wisdom
+                <span>and conversations.</span>
+            </h1>
+
+            <p>
+                Reflections on faith, family, relationships,
+                purpose and the journey of building stronger lives.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Featured Posts -->
+
+    <section class="blog-featured">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-eyebrow">
+                        Featured
+                    </p>
+
+                    <h2>
+                        Worth spending
+                        <span>time with.</span>
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="featured-posts-grid">
+
+                {% for post in featured_posts %}
+
+                    <article class="post-card featured-card">
+
+                        {% if post.featured_image %}
+
+                            <a
+                                href="{% url 'blog:post_detail' post.slug %}"
+                                class="post-card-image"
+                            >
+
+                                <img
+                                    src="{{ post.featured_image.url }}"
+                                    alt="{{ post.title }}"
+                                >
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <div class="post-card-content">
+
+                            <div class="post-meta">
+
+                                {{ post.published_date|date:"F j, Y" }}
+
+                            </div>
+
+
+                            <h3>
+
+                                <a
+                                    href="{% url 'blog:post_detail' post.slug %}"
+                                >
+                                    {{ post.title }}
+                                </a>
+
+                            </h3>
+
+
+                            <p>
+                                {{ post.excerpt }}
+                            </p>
+
+
+                            <a
+                                href="{% url 'blog:post_detail' post.slug %}"
+                                class="read-more"
+                            >
+                                Read story →
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <p>
+                        No featured stories yet.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Normal Posts -->
+
+    <section class="blog-posts">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <p class="section-eyebrow">
+                    Latest
+                </p>
+
+                <h2>
+                    From the journal
+                </h2>
+
+            </div>
+
+
+            <div class="posts-list">
+
+                {% for post in posts %}
+
+                    <article class="post-list-item">
+
+                        {% if post.featured_image %}
+
+                            <a
+                                href="{% url 'blog:post_detail' post.slug %}"
+                                class="post-list-image"
+                            >
+
+                                <img
+                                    src="{{ post.featured_image.url }}"
+                                    alt="{{ post.title }}"
+                                >
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <div class="post-list-content">
+
+                            <p class="post-meta">
+                                {{ post.published_date|date:"F j, Y" }}
+                            </p>
+
+
+                            <h3>
+
+                                <a
+                                    href="{% url 'blog:post_detail' post.slug %}"
+                                >
+                                    {{ post.title }}
+                                </a>
+
+                            </h3>
+
+
+                            <p>
+                                {{ post.excerpt }}
+                            </p>
+
+
+                            <a
+                                href="{% url 'blog:post_detail' post.slug %}"
+                                class="read-more"
+                            >
+                                Read story →
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <p>
+                        There are no published posts yet.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Categories -->
+
+    <section class="blog-categories">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <p class="section-eyebrow">
+                    Explore
+                </p>
+
+                <h2>
+                    Find a conversation
+                    <span>that speaks to you.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="category-list">
+
+                {% for category in categories %}
+
+                    <a
+                        href="{% url 'blog:category_posts' category.slug %}"
+                        class="category-link"
+                    >
+
+                        <span>
+                            {{ category.name }}
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </a>
+
+                {% empty %}
+
+                    <p>
+                        Categories will appear here as they are added.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+{% endblock %}

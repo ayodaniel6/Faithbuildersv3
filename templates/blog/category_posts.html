@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<section class="category-page">
+
+    <!-- Category Header -->
+
+    <header class="category-header">
+
+        <div class="container">
+
+            <p class="section-eyebrow">
+                Journal Category
+            </p>
+
+            <h1>
+                {{ category.name }}
+            </h1>
+
+            <p>
+                Explore stories, reflections and conversations
+                from this part of the Faithbuilders journal.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- Category Posts -->
+
+    <section class="category-posts">
+
+        <div class="container">
+
+            {% if posts %}
+
+                <div class="category-posts-list">
+
+                    {% for post in posts %}
+
+                        <article class="category-post">
+
+                            {% if post.featured_image %}
+
+                                <a
+                                    href="{% url 'blog:post_detail' post.slug %}"
+                                    class="category-post-image"
+                                >
+
+                                    <img
+                                        src="{{ post.featured_image.url }}"
+                                        alt="{{ post.title }}"
+                                    >
+
+                                </a>
+
+                            {% endif %}
+
+
+                            <div class="category-post-content">
+
+                                <p class="post-meta">
+                                    {{ post.published_date|date:"F j, Y" }}
+                                </p>
+
+
+                                <h2>
+
+                                    <a
+                                        href="{% url 'blog:post_detail' post.slug %}"
+                                    >
+                                        {{ post.title }}
+                                    </a>
+
+                                </h2>
+
+
+                                {% if post.excerpt %}
+
+                                    <p>
+                                        {{ post.excerpt }}
+                                    </p>
+
+                                {% endif %}
+
+
+                                <a
+                                    href="{% url 'blog:post_detail' post.slug %}"
+                                    class="read-more"
+                                >
+                                    Read story →
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-category">
+
+                    <h2>
+                        Nothing here yet.
+                    </h2>
+
+                    <p>
+                        There are no published stories in this
+                        category at the moment.
+                    </p>
+
+                    <a
+                        href="{% url 'blog:post_list' %}"
+                        class="text-link"
+                    >
+                        Return to the journal →
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Back to Journal -->
+
+    <section class="category-footer">
+
+        <div class="container">
+
+            <a
+                href="{% url 'blog:post_list' %}"
+                class="text-link"
+            >
+                ← Explore all stories
+            </a>
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}
