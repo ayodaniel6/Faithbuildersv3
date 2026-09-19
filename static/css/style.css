@@ -2437,3 +2437,119 @@ section {
     }
 
 }
+
+/* Previous / Next article navigation */
+
+.post-navigation {
+    width: min(
+        90%,
+        900px
+    );
+
+    margin: 4rem auto 5rem;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+.post-nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    padding: 1.5rem;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-medium);
+
+    color: var(--color-primary);
+
+    background-color: var(--color-surface);
+
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.post-nav-next {
+    justify-content: flex-end;
+
+    text-align: right;
+}
+
+.post-nav-arrow {
+    flex-shrink: 0;
+
+    font-size: 1.6rem;
+
+    line-height: 1;
+
+    color: var(--color-accent);
+}
+
+.post-nav-label {
+    display: block;
+
+    color: var(--color-text-muted);
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+.post-nav-title {
+    display: block;
+
+    margin-top: 0.35rem;
+
+    font-family: var(--font-heading);
+
+    font-size: 1.05rem;
+}
+
+.post-nav:hover {
+    border-color: var(--color-accent);
+
+    transform: translateY(-2px);
+}
+
+/* Keeps a single link aligned to its side when the other end is empty. */
+.post-nav-placeholder {
+    border: 0;
+
+    background: transparent;
+}
+
+@media (max-width: 600px) {
+
+    .post-navigation {
+        grid-template-columns: 1fr;
+
+        margin-block: 3rem 4rem;
+    }
+
+    .post-nav-next {
+        justify-content: flex-start;
+
+        text-align: left;
+
+        flex-direction: row-reverse;
+    }
+
+    .post-nav-placeholder {
+        display: none;
+    }
+
+}

@@ -105,6 +105,7 @@ class PostAdmin(admin.ModelAdmin):
                 "fields": (
                     "categories",
                     "series",
+                    "series_order",
                     "author",
                 )
             }

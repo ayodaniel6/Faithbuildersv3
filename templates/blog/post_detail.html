@@ -77,7 +77,7 @@
             </p>
 
             <h2>
-                {{ post.series.name }}
+                {{ post.series.title }}
             </h2>
 
 
@@ -144,7 +144,7 @@
             <div class="video-wrapper">
 
                 <iframe
-                    src="{{ post.youtube_embed_url }}"
+                    src="{{ youtube_embed_url }}"
                     title="{{ post.title }}"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -243,6 +243,80 @@
         </div>
 
     </section>
+
+
+    <!-- Previous / Next article navigation -->
+
+    {% if previous_article or next_article %}
+
+        <nav class="post-navigation" aria-label="Article navigation">
+
+            {% if previous_article %}
+
+                <a
+                    href="{% url 'blog:post_detail' previous_article.slug %}"
+                    class="post-nav post-nav-previous"
+                    rel="prev"
+                >
+                    <span class="post-nav-arrow" aria-hidden="true">
+                        ←
+                    </span>
+
+                    <span class="post-nav-text">
+
+                        <span class="post-nav-label">
+                            Previous
+                        </span>
+
+                        <strong class="post-nav-title">
+                            {{ previous_article.title }}
+                        </strong>
+
+                    </span>
+
+                </a>
+
+            {% else %}
+
+                <span class="post-nav post-nav-placeholder"></span>
+
+            {% endif %}
+
+
+            {% if next_article %}
+
+                <a
+                    href="{% url 'blog:post_detail' next_article.slug %}"
+                    class="post-nav post-nav-next"
+                    rel="next"
+                >
+                    <span class="post-nav-text">
+
+                        <span class="post-nav-label">
+                            Next
+                        </span>
+
+                        <strong class="post-nav-title">
+                            {{ next_article.title }}
+                        </strong>
+
+                    </span>
+
+                    <span class="post-nav-arrow" aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+            {% else %}
+
+                <span class="post-nav post-nav-placeholder"></span>
+
+            {% endif %}
+
+        </nav>
+
+    {% endif %}
 
 </article>
 
