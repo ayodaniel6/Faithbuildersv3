@@ -54,6 +54,32 @@ class PostDetailView(DetailView):
             self.object.youtube_url
         )
 
+     # Previous / next article navigation (across all published posts)
+
+        published_posts = list(
+            Post.objects.filter(
+                status="published"
+            ).order_by(
+                "-published_date"
+            )
+        )
+
+        if self.object in published_posts:
+
+            current = published_posts.index(self.object)
+
+            context["previous_article"] = (
+                published_posts[current - 1]
+                if current > 0
+                else None
+            )
+
+            context["next_article"] = (
+                published_posts[current + 1]
+                if current < len(published_posts) - 1
+                else None
+            )
+
      # Series navigation
 
         if self.object.series:
@@ -62,9 +88,13 @@ class PostDetailView(DetailView):
                 self.object.series.posts.filter(
                     status="published"
                 ).order_by(
-                    "series_order"
+                    "series_order",
+                    "published_date",
                 )
             )
+
+            if self.object not in series_posts:
+                return context
 
             current_index = series_posts.index(
                 self.object

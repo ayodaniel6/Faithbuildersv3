@@ -19,19 +19,30 @@ def get_youtube_embed_url(url):
 
     parsed_url = urlparse(url)
 
-    if parsed_url.hostname in ["www.youtube.com", "youtube.com"]:
-        video_id = parse_qs(
-            parsed_url.query
-        ).get(
-            "v",
-            [None]
-        )[0]
+    hostname = (parsed_url.hostname or "").lower()
 
-    elif parsed_url.hostname == "youtu.be":
-        video_id = parsed_url.path.lstrip("/")
+    # Normalise a leading "www." / "m." so mobile links work too.
+    if hostname.startswith("www."):
+        hostname = hostname[4:]
+    elif hostname.startswith("m."):
+        hostname = hostname[2:]
 
-    else:
-        return None
+    video_id = None
+
+    if hostname == "youtu.be":
+        # Short share link: https://youtu.be/<id>?si=...
+        video_id = parsed_url.path.lstrip("/").split("/")[0]
+
+    elif hostname in ("youtube.com", "youtube-nocookie.com"):
+        path = parsed_url.path
+
+        if path == "/watch":
+            # Standard link: https://www.youtube.com/watch?v=<id>
+            video_id = parse_qs(parsed_url.query).get("v", [None])[0]
+
+        elif path.startswith(("/embed/", "/shorts/", "/live/", "/v/")):
+            # Already-embed, Shorts, Live and legacy /v/ links.
+            video_id = path.split("/")[2]
 
     if not video_id:
         return None

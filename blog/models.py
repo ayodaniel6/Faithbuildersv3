@@ -124,6 +124,7 @@ class Post(TimeStampedModel):
     series = models.ForeignKey(
         Series,
         on_delete=models.SET_NULL,
+        related_name="posts",
         null=True,
         blank=True
     )
