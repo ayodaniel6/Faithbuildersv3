@@ -17,15 +17,23 @@ def get_youtube_embed_url(url):
     if not url:
         return None
 
+    # Authors often paste a link with stray whitespace or without a
+    # scheme (e.g. "youtu.be/<id>"); handle both so the embed still works.
+    url = url.strip()
+
+    if "//" not in url:
+        url = "https://" + url
+
     parsed_url = urlparse(url)
 
     hostname = (parsed_url.hostname or "").lower()
 
-    # Normalise a leading "www." / "m." so mobile links work too.
-    if hostname.startswith("www."):
-        hostname = hostname[4:]
-    elif hostname.startswith("m."):
-        hostname = hostname[2:]
+    # Normalise leading "www." / "m." / "music." so mobile, desktop and
+    # YouTube Music links all resolve to the same embed.
+    for prefix in ("www.", "m.", "music."):
+        if hostname.startswith(prefix):
+            hostname = hostname[len(prefix):]
+            break
 
     video_id = None
 
