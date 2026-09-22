@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -197,6 +198,13 @@ class Post(TimeStampedModel):
         minutes = words // 200
 
         return max(1, minutes)
+
+
+    def get_absolute_url(self):
+        return reverse(
+            "blog:post_detail",
+            kwargs={"slug": self.slug},
+        )
 
 
     def save(self, *args, **kwargs):
