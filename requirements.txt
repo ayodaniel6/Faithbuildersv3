@@ -1,0 +1,21 @@
+# Faithbuilders — Python dependencies
+#
+# Install with:  pip install -r requirements.txt
+#
+# Version ranges are kept flexible so the project installs cleanly on
+# recent Python/Django versions. Run `pip freeze > requirements.txt` if
+# you want to pin exact versions for reproducible deploys.
+
+# --- Core ---
+Django>=5.2,<6.1
+markdown>=3.5          # renders post bodies written in Markdown
+Pillow>=10.0           # required by Django ImageField (post/team images)
+python-dotenv>=1.0     # loads settings from a local .env file
+
+# --- Production serving ---
+whitenoise>=6.6        # serves static files from the app process
+gunicorn>=21.2         # WSGI server (Linux/macOS hosts)
+
+# --- PostgreSQL (recommended in production; uncomment to use) ---
+# psycopg[binary]>=3.1
+# dj-database-url>=2.1

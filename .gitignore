@@ -1,7 +1,7 @@
+# Local secrets — never commit the real .env, but keep the template.
 .env
 .env.*
 !.env.example
-.env.example
 __pycache__/
 *.py[cod]
 

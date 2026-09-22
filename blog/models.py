@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 
 class TimeStampedModel(models.Model):
+    """Abstract base that stamps every row with created/updated times."""
 
     created_at = models.DateTimeField(
         auto_now_add=True
@@ -20,6 +21,7 @@ class TimeStampedModel(models.Model):
 
 
 class Category(TimeStampedModel):
+    """A topic used to group posts (e.g. "Marriage", "Youth")."""
 
     name = models.CharField(
         max_length=100
@@ -51,6 +53,7 @@ class Category(TimeStampedModel):
 
 
 class Series(TimeStampedModel):
+    """An ordered collection of posts that form a multi-part story."""
 
     title = models.CharField(
         max_length=200
@@ -87,6 +90,13 @@ class Series(TimeStampedModel):
 
 
 class Post(TimeStampedModel):
+    """A blog article.
+
+    A post may optionally belong to a ``Series`` (with an explicit
+    ``series_order``), carry a YouTube link, and be flagged as
+    ``is_featured`` to appear in the homepage highlight strip. Only
+    posts with ``status="published"`` are shown on the public site.
+    """
 
     STATUS_CHOICES = (
         ("draft", "Draft"),
@@ -194,6 +204,7 @@ class Post(TimeStampedModel):
     ]
 
     def reading_time(self):
+        """Rough estimate of read time in minutes (~200 words/min)."""
         words = len(self.body.split())
         minutes = words // 200
 
@@ -201,6 +212,11 @@ class Post(TimeStampedModel):
 
 
     def get_absolute_url(self):
+        """Canonical URL of the post's detail page.
+
+        Used by templates (e.g. the homepage cards) and by Django
+        wherever a post needs to link to itself.
+        """
         return reverse(
             "blog:post_detail",
             kwargs={"slug": self.slug},
@@ -208,7 +224,7 @@ class Post(TimeStampedModel):
 
 
     def save(self, *args, **kwargs):
-
+        # Auto-generate a slug from the title on first save.
         if not self.slug:
             self.slug = slugify(self.title)
 

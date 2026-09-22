@@ -5,6 +5,11 @@ from .models import TeamMember
 
 
 class HomeView(TemplateView):
+    """The public landing page.
+
+    Pulls together the pieces shown on the homepage: the featured post
+    strip, the latest posts, and the founder profile.
+    """
 
     template_name = "core/home.html"
 
