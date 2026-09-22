@@ -50,6 +50,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # WhiteNoise serves static files efficiently in production. It sits
+    # directly after SecurityMiddleware and is a no-op under runserver.
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -125,9 +128,66 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Source assets tracked in the repo.
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# Destination for `python manage.py collectstatic` (used in production).
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Serve compressed static files through WhiteNoise in production.
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
+
+# User-uploaded files (post images, team photos, ...).
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Security
+# These protections are only meaningful over HTTPS, so they are enabled
+# automatically whenever DEBUG is off (i.e. in production). During local
+# development (DEBUG=True) they stay disabled so runserver keeps working.
+
+# Hosts/domains that may serve POST forms in production. Set this in the
+# environment to your real domain(s), e.g.
+# CSRF_TRUSTED_ORIGINS=https://faithbuilders.org,https://www.faithbuilders.org
+CSRF_TRUSTED_ORIGINS = (
+    os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
+    if os.getenv("CSRF_TRUSTED_ORIGINS")
+    else []
+)
+
+if not DEBUG:
+    # Redirect all HTTP traffic to HTTPS.
+    SECURE_SSL_REDIRECT = True
+
+    # Trust the X-Forwarded-Proto header set by the hosting proxy so
+    # Django knows the original request was HTTPS.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # Only send session / CSRF cookies over HTTPS.
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # HTTP Strict Transport Security: start small, then raise to a year
+    # (31536000) once you've confirmed HTTPS works everywhere.
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Extra hardening headers.
+    SECURE_CONTENT_TYPE_NOSNIFF = True

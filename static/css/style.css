@@ -1943,6 +1943,37 @@ section {
     border: 0;
 }
 
+/*
+    Fallback link shown under every embedded video. Lets visitors open
+    the clip on YouTube when the owner has disabled in-page embedding.
+    The arrow nudges on hover to match the post-card "Read article" links.
+*/
+.post-video-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.4rem;
+
+    margin-top: 1rem;
+
+    color: var(--color-primary);
+
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.post-video-link span {
+    color: var(--color-accent);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.post-video-link:hover span {
+    transform: translate(3px, -3px);
+}
+
 .post-detail-categories {
     width: min(
         90%,

@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class SiteSettings(models.Model):
     """
@@ -42,11 +41,13 @@ class SiteSettings(models.Model):
     )
 
     class Meta:
-            verbose_name = "Site Settings"
-            verbose_name_plural = "Site Settings"
+        verbose_name = "Site Settings"
+        verbose_name_plural = "Site Settings"
 
 
     def save(self, *args, **kwargs):
+        # Enforce a single settings row: ignore attempts to create a
+        # second one while still allowing the existing row to be updated.
         if SiteSettings.objects.exists() and not self.pk:
             return
 
@@ -101,8 +102,8 @@ class TeamMember(models.Model):
     )
 
     class Meta:
-            verbose_name = "Team Member"
-            verbose_name_plural = "Team Members"
+        verbose_name = "Team Member"
+        verbose_name_plural = "Team Members"
 
 
     def __str__(self):
@@ -140,6 +141,7 @@ class AboutPage(models.Model):
 
 
 class EmpowermentProgram(models.Model):
+    """An outreach / empowerment initiative people can register for."""
 
     title = models.CharField(
         max_length=150

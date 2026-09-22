@@ -131,7 +131,14 @@
     </div>
 
 
-    <!-- YouTube Video -->
+    <!--
+        YouTube Video
+
+        The embedded player is shown when the link resolves to a valid
+        video. Some videos have embedding disabled by their owner (the
+        player then shows a "Video unavailable" / error message), so a
+        direct "Watch on YouTube" link is always offered as a fallback.
+    -->
 
     {% if youtube_embed_url %}
 
@@ -147,12 +154,23 @@
                     src="{{ youtube_embed_url }}"
                     title="{{ post.title }}"
                     frameborder="0"
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen
                 >
                 </iframe>
 
             </div>
+
+            <a
+                href="{{ post.youtube_url }}"
+                class="post-video-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Watch on YouTube
+                <span aria-hidden="true">↗</span>
+            </a>
 
         </div>
 
